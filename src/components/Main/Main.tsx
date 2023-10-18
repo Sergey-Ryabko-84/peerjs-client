@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../../socket";
 import { Box, Button, TextField } from "@mui/material";
+import { socket } from "../../socket";
 
 export const Main = () => {
   const navigate = useNavigate();
   const roomRef = useRef<HTMLInputElement | null>(null);
   const userRef = useRef<HTMLInputElement | null>(null);
-  const [err, setErr] = useState<boolean>(false);
-  const [errMsg, setErrMsg] = useState<string | null>("");
+  const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
     socket.on("FE-error-user-exist", ({ error }: { error: boolean }) => {
@@ -20,11 +19,9 @@ export const Main = () => {
           sessionStorage.setItem("user", userName);
           navigate(`/room/${roomName}`);
         } else {
-          setErr(true);
           setErrMsg("Enter Room Name or User Name");
         }
       } else {
-        setErr(true);
         setErrMsg("User name already exists");
       }
     });
@@ -35,7 +32,6 @@ export const Main = () => {
     const userName = userRef.current?.value;
 
     if (!roomName || !userName) {
-      setErr(true);
       setErrMsg("Enter Room Name or User Name");
     } else {
       socket.emit("BE-check-user", { roomId: roomName, userName });
@@ -59,7 +55,7 @@ export const Main = () => {
         <Button variant="contained" fullWidth onClick={clickJoin} sx={{ height: 56, fontSize: 18 }}>
           Join
         </Button>
-        {err ? <div>{errMsg}</div> : null}
+        {errMsg ? <div>{errMsg}</div> : null}
       </Box>
     </Box>
   );
