@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import Peer, { MediaConnection } from "peerjs";
 import { socket } from "../../socket";
 import { VideoCard, BottomBar, Chat } from "../../components";
+import { Box } from "@mui/material";
 
-interface ExtendedPeer extends Peer {
+export interface ExtendedPeer extends Peer {
   userName: string;
   peerID: string;
 }
@@ -364,18 +365,45 @@ export const Room = () => {
   // };
 
   return (
-    <div onClick={clickBackground}>
-      <div>
-        <div>
+    <Box
+      onClick={clickBackground}
+      sx={{ width: "100%", maxHeight: "100vh", display: "flex", flexDirection: "row" }}>
+      <Box sx={{ position: "relative", width: "100%", height: "100vh" }}>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            height: "92%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            alignItems: "center",
+            p: 2,
+            boxSizing: "border-box",
+            gap: 10,
+          }}>
           {/* Current User Video */}
-          <div className={`width-peer${peers.length > 8 ? "" : peers.length}`}>
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
             {userVideoAudio["localUser"].video ? null : writeUserName(currentUser || "")}
             <i className="fas fa-expand" />
-            <video onClick={expandScreen} ref={userVideoRef} muted autoPlay playsInline />
-          </div>
+            <video
+              onClick={expandScreen}
+              ref={userVideoRef}
+              muted
+              autoPlay
+              playsInline
+              style={{ top: 0, left: 0, width: "100%", height: "100%" }}
+            />
+          </Box>
           {/* Joined User Video */}
           {peers.map((peer, index) => createUserVideo(peer, index, peers))}
-        </div>
+        </Box>
         <BottomBar
         // clickScreenSharing={clickScreenSharing}
         // clickChat={clickChat}
@@ -388,10 +416,10 @@ export const Room = () => {
         // showVideoDevices={showVideoDevices}
         // setShowVideoDevices={setShowVideoDevices}
         />
-      </div>
+      </Box>
       <Chat
       // display={displayChat} roomId={roomId}
       />
-    </div>
+    </Box>
   );
 };
