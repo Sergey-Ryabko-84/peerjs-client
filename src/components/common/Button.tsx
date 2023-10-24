@@ -1,26 +1,14 @@
-import classNames from "classnames";
+import { Button as ButtonMUI, ButtonProps, Typography } from "@mui/material";
 
-interface ButtonProps {
-  children: React.ReactNode;
+interface Props extends ButtonProps {
   onClick?: () => void;
-  className: string;
+  className?: string;
   testId?: string;
-  type?: "submit" | "button" | "reset";
 }
-export const Button: React.FC<ButtonProps> = ({
-  children,
-  onClick,
-  testId,
-  className,
-  type = "submit",
-}) => {
+export const Button: React.FC<Props> = ({ children, onClick, type = "submit" }) => {
   return (
-    <button
-      type={type}
-      data-testid={testId}
-      onClick={onClick}
-      className={classNames("bg-rose-400 p-2 rounded-lg hover:bg-rose-600 text-white", className)}>
-      {children}
-    </button>
+    <ButtonMUI variant="contained" type={type} onClick={onClick} fullWidth>
+      <Typography>{children}</Typography>
+    </ButtonMUI>
   );
 };

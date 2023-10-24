@@ -1,8 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, TextField, Typography, colors } from "@mui/material";
 import { NameInput } from "../common/Name";
 import { Button } from "./common/Button";
 import { ws } from "../ws";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const Join: React.FC = () => {
   const [roomId, setRoomId] = useState<string>("");
@@ -18,21 +19,31 @@ export const Join: React.FC = () => {
   };
 
   return (
-    <div className=" flex flex-col">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        alignItems: "center",
+        height: "100vh",
+        width: 380,
+        mx: "auto",
+        mt: "35vh",
+      }}>
       <NameInput />
-      <Button onClick={createRoom} className="py-2 px-8 text-xl">
-        Start new meeting
-      </Button>
+      <Button onClick={createRoom}>Start new meeting</Button>
+      <Typography color={colors.grey[500]}>or</Typography>
       <form
-        style={{ display: "flex", columnGap: "10px", alignItems: "center" }}
+        style={{ width: "100%", display: "flex", columnGap: "10px", alignItems: "center" }}
         onSubmit={(e) => joinRoom(e)}>
-        <input
+        <TextField
           onChange={(e) => setRoomId(e.target.value)}
-          className="border rounded-md p-2 h-10 my-2 w-full"
-          type="text"
+          placeholder="room ID"
+          size="small"
+          sx={{ width: 1000 }}
         />
-        <Button className="py-1 px-8 h-10 text-xl">Join</Button>
+        <Button>Join</Button>
       </form>
-    </div>
+    </Box>
   );
 };
