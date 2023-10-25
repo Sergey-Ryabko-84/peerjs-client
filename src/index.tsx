@@ -2,11 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import { RoomProvider } from "./context/RoomContext";
-import { Home } from "./pages/Home";
-import { Room } from "./pages/Room";
-import { UserProvider } from "./context/UserContext";
-import { ChatProvider } from "./context/ChatContext";
+import { RoomProvider } from "./context";
+import { Home, Room } from "./pages";
+import { UserProvider, ChatProvider } from "./context";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

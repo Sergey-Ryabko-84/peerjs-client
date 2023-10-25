@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context";
 
 export const NameInput: React.FC = () => {
   const { userName, setUserName } = useContext(UserContext);

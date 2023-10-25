@@ -2,13 +2,14 @@ import React, { createContext, useEffect, useState, useReducer, useContext } fro
 import { useNavigate } from "react-router-dom";
 import Peer from "peerjs";
 import { ws } from "../ws";
-import { peersReducer, PeerState } from "../reducers/peerReducer";
 import {
+  peersReducer,
+  PeerState,
   addPeerStreamAction,
   addPeerNameAction,
   removePeerStreamAction,
   addAllPeersAction,
-} from "../reducers/peerActions";
+} from "../reducers";
 
 import { UserContext } from "./UserContext";
 import { IPeer } from "../types/peer";

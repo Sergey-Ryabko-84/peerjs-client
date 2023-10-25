@@ -1,7 +1,12 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import { IMessage } from "../types/chat";
-import { chatReducer, ChatState } from "../reducers/chatReducer";
-import { addHistoryAction, addMessageAction, toggleChatAction } from "../reducers/chatActions";
+import { IMessage } from "../types";
+import {
+  chatReducer,
+  ChatState,
+  addHistoryAction,
+  addMessageAction,
+  toggleChatAction,
+} from "../reducers";
 import { ws } from "../ws";
 
 interface Props {

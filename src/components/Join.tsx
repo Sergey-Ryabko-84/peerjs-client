@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, TextField, Typography, colors } from "@mui/material";
-import { NameInput } from "../common/Name";
-import { Button } from "./common/Button";
+import { NameInput } from "../common";
+import { Button } from "./common";
 import { ws } from "../ws";
 
 export const Join: React.FC = () => {

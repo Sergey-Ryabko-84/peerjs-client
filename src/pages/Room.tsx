@@ -1,17 +1,12 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
-import { ShareScreenButton } from "../components/ShareScreeenButton";
-import { ChatButton } from "../components/ChatButton";
-import { CallEndButton } from "../components/CallEndButton";
-import { VideoPlayer } from "../components/VideoPlayer";
-import { PeerState } from "../reducers/peerReducer";
-import { RoomContext } from "../context/RoomContext";
-import { Chat } from "../components/chat/Chat";
-import { NameInput } from "../common/Name";
+import { CallEndButton, ChatButton, ShareScreenButton, VideoPlayer } from "../components";
+import { Chat } from "../components/chat";
+import { PeerState } from "../reducers";
+import { NameInput } from "../common";
+import { ChatContext, RoomContext, UserContext } from "../context";
 import { ws } from "../ws";
-import { UserContext } from "../context/UserContext";
-import { ChatContext } from "../context/ChatContext";
 
 export const Room = () => {
   const { id } = useParams();
