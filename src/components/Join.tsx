@@ -25,7 +25,6 @@ export const Join: React.FC = () => {
         flexDirection: "column",
         gap: "10px",
         alignItems: "center",
-        height: "100vh",
         width: 380,
         mx: "auto",
         mt: "35vh",

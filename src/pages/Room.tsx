@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
 import { ShareScreenButton } from "../components/ShareScreeenButton";
 import { ChatButton } from "../components/ChatButton";
+import { CallEndButton } from "../components/CallEndButton";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { PeerState } from "../reducers/peerReducer";
 import { RoomContext } from "../context/RoomContext";
@@ -43,7 +44,7 @@ export const Room = () => {
         <Grid container spacing={2}>
           {screenSharingId !== userId && (
             <Grid item xs={6}>
-              <VideoPlayer stream={stream} />
+              <VideoPlayer stream={stream} muted />
               <NameInput />
             </Grid>
           )}
@@ -62,10 +63,23 @@ export const Room = () => {
           </div>
         )}
       </Box>
-      <div className="h-28 fixed bottom-0 p-6 w-full flex items-center justify-center border-t-2 bg-white">
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          py: 1,
+          bgcolor: "#fff",
+          borderTop: "2px solid #ddd",
+        }}
+        className="h-28 fixed bottom-0 p-6 w-full flex items-center justify-center border-t-2 bg-white">
         <ShareScreenButton onClick={shareScreen} />
         <ChatButton onClick={toggleChat} />
-      </div>
+        <CallEndButton />
+      </Box>
     </Box>
   );
 };
