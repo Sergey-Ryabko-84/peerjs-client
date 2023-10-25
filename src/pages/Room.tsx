@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { CallEndButton, ChatButton, ShareScreenButton, VideoPlayer } from "../components";
 import { Chat } from "../components/chat";
 import { PeerState } from "../reducers";
@@ -29,10 +29,27 @@ export const Room = () => {
   const { [screenSharingId]: sharing, ...peersToShow } = peers;
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "90vh", gap: 2 }}>
-      <Box sx={{ bgcolor: "#0277bd", color: "#fff", p: 2 }}>Room id: {id}</Box>
+      <Box
+        sx={{
+          bgcolor: "#0277bd",
+          color: "#fff",
+          p: 1,
+          display: "flex",
+          alignItems: "center  ",
+          gap: 4,
+        }}>
+        Room id: {id}
+        <Box>
+          <Button
+            onClick={() => navigator.clipboard.writeText(`${id}`)}
+            sx={{ color: "#fff", fontWeight: 700 }}>
+            Copy ID
+          </Button>
+        </Box>
+      </Box>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo && (
-          <Box className="w-4/5 pr-4">
+          <Box sx={{ width: "100%" }}>
             <VideoPlayer stream={screenSharingVideo} />
           </Box>
         )}
@@ -46,16 +63,16 @@ export const Room = () => {
           {Object.values(peersToShow as PeerState)
             .filter((peer) => !!peer.stream)
             .map((peer, index) => (
-              <Grid item xs={6} key={index}>
+              <Grid item xs key={index}>
                 <VideoPlayer stream={peer.stream} />
                 <div>{peer.userName}</div>
               </Grid>
             ))}
         </Grid>
         {chat.isChatOpen && (
-          <div className="border-l-2 pb-28">
+          <Box sx={{ borderLeft: "1px solid #ddd", pl: 1 }}>
             <Chat />
-          </div>
+          </Box>
         )}
       </Box>
       <Box
@@ -69,8 +86,7 @@ export const Room = () => {
           py: 1,
           bgcolor: "#fff",
           borderTop: "2px solid #ddd",
-        }}
-        className="h-28 fixed bottom-0 p-6 w-full flex items-center justify-center border-t-2 bg-white">
+        }}>
         <ShareScreenButton onClick={shareScreen} />
         <ChatButton onClick={toggleChat} />
         <CallEndButton />
