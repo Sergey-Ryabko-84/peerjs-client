@@ -48,12 +48,11 @@ export const Room = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <div>
-          {screenSharingVideo && (
-            <Box sx={{ width: "100%" }}>
-              <VideoPlayer stream={screenSharingVideo} />
-            </Box>
-          )}
+        {screenSharingVideo ? (
+          <Box sx={{ width: "100%" }}>
+            <VideoPlayer stream={screenSharingVideo} />
+          </Box>
+        ) : (
           <Grid container spacing={2}>
             {screenSharingId !== userId && (
               <Grid item xs={6}>
@@ -70,9 +69,9 @@ export const Room = () => {
                 </Grid>
               ))}
           </Grid>
-        </div>
+        )}
         {chat.isChatOpen && (
-          <Box sx={{ borderLeft: "1px solid #ddd", pl: 1 }}>
+          <Box sx={{ maxWidth: "20vw", borderLeft: "1px solid #ddd", pl: 1 }}>
             <Chat />
           </Box>
         )}
