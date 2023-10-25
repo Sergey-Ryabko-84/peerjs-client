@@ -28,9 +28,9 @@ export const Room = () => {
 
   const { [screenSharingId]: sharing, ...peersToShow } = peers;
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minWidth: "100vh", gap: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "90vh", gap: 2 }}>
       <Box sx={{ bgcolor: "#0277bd", color: "#fff", p: 2 }}>Room id: {id}</Box>
-      <Box className="flex grow">
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo && (
           <Box className="w-4/5 pr-4">
             <VideoPlayer stream={screenSharingVideo} />
