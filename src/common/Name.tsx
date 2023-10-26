@@ -1,8 +1,8 @@
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "../context";
 
-export const NameInput: React.FC = () => {
+export const NameInput: React.FC<TextFieldProps> = (props) => {
   const { userName, setUserName } = useContext(UserContext);
   return (
     <TextField
@@ -11,6 +11,7 @@ export const NameInput: React.FC = () => {
       value={userName}
       size="small"
       fullWidth
+      {...props}
     />
   );
 };

@@ -4,7 +4,6 @@ import { Box, Button, Grid } from "@mui/material";
 import { CallEndButton, ChatButton, ShareScreenButton, VideoPlayer } from "../components";
 import { Chat } from "../components/chat";
 import { PeerState } from "../reducers";
-import { NameInput } from "../common";
 import { ChatContext, RoomContext, UserContext } from "../context";
 import { ws } from "../ws";
 
@@ -59,17 +58,15 @@ export const Room = () => {
         ) : (
           <Grid container spacing={2} justifyContent="center">
             {screenSharingId !== userId && (
-              <Grid item xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
-                <VideoPlayer stream={stream} muted />
-                <NameInput />
+              <Grid item xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2} sx={{ position: "relative" }}>
+                <VideoPlayer stream={stream} muted userName={userName} />
               </Grid>
             )}
             {Object.values(peersToShow as PeerState)
               .filter((peer) => !!peer.stream)
               .map((peer, index) => (
                 <Grid item key={index} xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
-                  <VideoPlayer stream={peer.stream} />
-                  <div>{peer.userName}</div>
+                  <VideoPlayer stream={peer.stream} userName={peer.userName} />
                 </Grid>
               ))}
           </Grid>
