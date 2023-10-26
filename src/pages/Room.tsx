@@ -66,7 +66,7 @@ export const Room = () => {
             {screenSharingId !== userId && (
               <Grid
                 item
-                xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}
+                xs={numberOfParticipants < 2 ? 6 : numberOfParticipants < 9 ? 3 : 2}
                 sx={{ position: "relative" }}>
                 <VideoPlayer stream={stream} muted userName={userName} />
               </Grid>
@@ -77,7 +77,7 @@ export const Room = () => {
                 <Grid
                   item
                   key={index}
-                  xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}>
+                  xs={numberOfParticipants < 2 ? 6 : numberOfParticipants < 9 ? 3 : 2}>
                   <VideoPlayer stream={peer.stream} userName={peer.userName} />
                 </Grid>
               ))}
