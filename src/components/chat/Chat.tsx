@@ -15,6 +15,7 @@ export const Chat: React.FC = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         height: "100%",
+        bgcolor: "#fff",
       }}
       data-testid="chat">
       <div>

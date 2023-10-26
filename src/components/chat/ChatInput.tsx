@@ -20,10 +20,7 @@ export const ChatInput: React.FC = () => {
         style={{ position: "relative" }}>
         <div className="flex ">
           <Textarea onChange={(e) => setMessage(e.target.value)} value={message} />
-          <IconButton
-            type="submit"
-            sx={{ position: "absolute", bottom: 12, right: 0 }}
-            className="bg-rose-400 p-4 mx-2 rounded-lg text-xl hover:bg-rose-600 text-white">
+          <IconButton type="submit" sx={{ position: "absolute", bottom: 12, right: 0 }}>
             <SendIcon />
           </IconButton>
         </div>

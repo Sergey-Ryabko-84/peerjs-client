@@ -27,6 +27,9 @@ export const Room = () => {
     screenSharingId === userId ? screenStream : peers[screenSharingId]?.stream;
 
   const { [screenSharingId]: sharing, ...peersToShow } = peers;
+  console.log("peersToShow:", peersToShow);
+  const nmbrP: number =
+    Object.values(peersToShow as PeerState).filter((peer) => !!peer.stream).length || 1;
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "90vh", gap: 2 }}>
       <Box
@@ -46,6 +49,7 @@ export const Room = () => {
             Copy ID
           </Button>
         </Box>
+        Number of participants: {nmbrP}
       </Box>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo ? (
@@ -53,9 +57,9 @@ export const Room = () => {
             <VideoPlayer stream={screenSharingVideo} />
           </Box>
         ) : (
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center">
             {screenSharingId !== userId && (
-              <Grid item xs={6}>
+              <Grid item xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
                 <VideoPlayer stream={stream} muted />
                 <NameInput />
               </Grid>
@@ -63,7 +67,7 @@ export const Room = () => {
             {Object.values(peersToShow as PeerState)
               .filter((peer) => !!peer.stream)
               .map((peer, index) => (
-                <Grid item xs key={index}>
+                <Grid item key={index} xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
                   <VideoPlayer stream={peer.stream} />
                   <div>{peer.userName}</div>
                 </Grid>
@@ -71,7 +75,7 @@ export const Room = () => {
           </Grid>
         )}
         {chat.isChatOpen && (
-          <Box sx={{ maxWidth: "20vw", borderLeft: "1px solid #ddd", pl: 1 }}>
+          <Box sx={{ maxWidth: "20vw", pl: 1, zIndex: 2 }}>
             <Chat />
           </Box>
         )}
