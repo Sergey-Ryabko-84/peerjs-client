@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button, Grid } from "@mui/material";
 import { CallEndButton, ChatButton, ShareScreenButton, VideoPlayer } from "../components";
@@ -9,7 +9,6 @@ import { ws } from "../ws";
 
 export const Room = () => {
   const { id } = useParams();
-  const [numberOfParticipants, setNumberOfParticipants] = useState(1);
   const { stream, screenStream, peers, shareScreen, screenSharingId, setRoomId } =
     useContext(RoomContext);
   const { userName, userId } = useContext(UserContext);
@@ -28,13 +27,8 @@ export const Room = () => {
 
   const { [screenSharingId]: sharing, ...peersToShow } = peers;
   console.log("peersToShow:", peersToShow);
-
-  useEffect(() => {
-    setNumberOfParticipants(
-      Object.values(peersToShow as PeerState).filter((peer) => !!peer.stream)?.length
-    );
-  }, [peersToShow]);
-
+  const nmbrP: number =
+    Object.values(peersToShow as PeerState).filter((peer) => !!peer.stream).length || 1;
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "90vh", gap: 2 }}>
       <Box
@@ -54,7 +48,7 @@ export const Room = () => {
             Copy ID
           </Button>
         </Box>
-        Number of participants: {numberOfParticipants}
+        Number of participants: {nmbrP}
       </Box>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo ? (
@@ -64,20 +58,14 @@ export const Room = () => {
         ) : (
           <Grid container spacing={2} justifyContent="center">
             {screenSharingId !== userId && (
-              <Grid
-                item
-                xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}
-                sx={{ position: "relative" }}>
+              <Grid item xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2} sx={{ position: "relative" }}>
                 <VideoPlayer stream={stream} muted userName={userName} />
               </Grid>
             )}
             {Object.values(peersToShow as PeerState)
               .filter((peer) => !!peer.stream)
               .map((peer, index) => (
-                <Grid
-                  item
-                  key={index}
-                  xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}>
+                <Grid item key={index} xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
                   <VideoPlayer stream={peer.stream} userName={peer.userName} />
                 </Grid>
               ))}
