@@ -18,7 +18,7 @@ export const VideoPlayer: React.FC<{ stream?: MediaStream; muted?: boolean }> = 
           ref={videoRef}
           autoPlay
           muted={muted}
-          // style={{ width: "100%" }}
+          sx={{ height: "100%" }}
         />
       </Box>
     </Box>
