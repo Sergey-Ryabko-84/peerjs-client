@@ -36,8 +36,8 @@ export const Join: React.FC = () => {
         style={{ width: "100%", display: "flex", columnGap: "10px", alignItems: "center" }}
         onSubmit={(e) => joinRoom(e)}>
         <TextField
+          label="room ID"
           onChange={(e) => setRoomId(e.target.value)}
-          placeholder="room ID"
           size="small"
           sx={{ width: 1000 }}
         />

@@ -18,7 +18,7 @@ export const ChatInput: React.FC = () => {
           setMessage("");
         }}
         style={{ position: "relative" }}>
-        <div className="flex ">
+        <div>
           <Textarea onChange={(e) => setMessage(e.target.value)} value={message} />
           <IconButton type="submit" sx={{ position: "absolute", bottom: 12, right: 0 }}>
             <SendIcon />

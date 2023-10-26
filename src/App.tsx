@@ -3,7 +3,8 @@ import { Join } from "./components";
 
 function App() {
   return (
-    <div className="App flex items-center justify-center w-screen h-screen">
+    // className="App flex items-center justify-center w-screen h-screen"
+    <div>
       <Join />
     </div>
   );

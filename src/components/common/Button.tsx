@@ -2,7 +2,6 @@ import { Button as ButtonMUI, ButtonProps, Typography } from "@mui/material";
 
 interface Props extends ButtonProps {
   onClick?: () => void;
-  className?: string;
   testId?: string;
 }
 export const Button: React.FC<Props> = ({ children, onClick, type = "submit" }) => {
