@@ -30,6 +30,7 @@ export const Room = () => {
 
   const nmbrP: number =
     Object.values(peersToShow as PeerState).filter((peer) => !!peer.stream).length + 1 || 1;
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "90vh", gap: 2 }}>
       <Box
@@ -59,14 +60,14 @@ export const Room = () => {
         ) : (
           <Grid container spacing={2} justifyContent="center">
             {screenSharingId !== userId && (
-              <Grid item xs={nmbrP < 2 ? 6 : nmbrP < 9 ? 3 : 2} sx={{ position: "relative" }}>
+              <Grid item xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2} sx={{ position: "relative" }}>
                 <VideoPlayer stream={stream} muted userName={userName} />
               </Grid>
             )}
             {Object.values(peersToShow as PeerState)
               .filter((peer) => !!peer.stream)
               .map((peer, index) => (
-                <Grid item key={index} xs={nmbrP < 2 ? 6 : nmbrP < 9 ? 3 : 2}>
+                <Grid item key={index} xs={nmbrP < 3 ? 6 : nmbrP < 9 ? 3 : 2}>
                   <VideoPlayer stream={peer.stream} userName={peer.userName} />
                 </Grid>
               ))}
