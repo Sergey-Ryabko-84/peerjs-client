@@ -1,7 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button, Grid } from "@mui/material";
-import { CallEndButton, ChatButton, ShareScreenButton, VideoPlayer } from "../components";
+import {
+  CallEndButton,
+  ChatButton,
+  ShareScreenButton,
+  ToggleMutedButton,
+  VideoPlayer,
+} from "../components";
 import { Chat } from "../components/chat";
 import { PeerState } from "../reducers";
 import { ChatContext, RoomContext, UserContext } from "../context";
@@ -10,6 +16,7 @@ import { ws } from "../ws";
 export const Room = () => {
   const { id } = useParams();
   const [numberOfParticipants, setNumberOfParticipants] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
   const { stream, screenStream, peers, shareScreen, screenSharingId, setRoomId } =
     useContext(RoomContext);
   const { userName, userId } = useContext(UserContext);
@@ -59,7 +66,7 @@ export const Room = () => {
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo ? (
           <Box sx={{ width: "100%" }}>
-            <VideoPlayer stream={screenSharingVideo} />
+            <VideoPlayer stream={screenSharingVideo} muted={isMuted} />
           </Box>
         ) : (
           <Grid container spacing={2} justifyContent="center">
@@ -78,7 +85,7 @@ export const Room = () => {
                   item
                   key={index}
                   xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}>
-                  <VideoPlayer stream={peer.stream} userName={peer.userName} />
+                  <VideoPlayer stream={peer.stream} userName={peer.userName} muted={isMuted} />
                 </Grid>
               ))}
           </Grid>
@@ -101,6 +108,7 @@ export const Room = () => {
           bgcolor: "#fff",
           borderTop: "2px solid #ddd",
         }}>
+        <ToggleMutedButton onClick={() => setIsMuted(!isMuted)} isMuted={isMuted} />
         <ShareScreenButton onClick={shareScreen} />
         <ChatButton onClick={toggleChat} />
         <CallEndButton />
