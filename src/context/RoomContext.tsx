@@ -23,9 +23,9 @@ interface RoomValue {
   roomId: string;
   setRoomId: (id: string) => void;
   screenSharingId: string;
-  toggleVideo: () => void;
-  toggleAudio: () => void;
-  isVideoOn: boolean;
+  handleCameraToggle: () => void;
+  handleAudioToggle: () => void;
+  isCameraOn: boolean;
   isAudioOn: boolean;
 }
 
@@ -39,9 +39,9 @@ export const RoomContext = createContext<RoomValue>({
   setRoomId: (id) => {},
   screenSharingId: "",
   roomId: "",
-  toggleVideo: () => {},
-  toggleAudio: () => {},
-  isVideoOn: true,
+  handleCameraToggle: () => {},
+  handleAudioToggle: () => {},
+  isCameraOn: true,
   isAudioOn: true,
 });
 
@@ -58,7 +58,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
   const [peers, dispatch] = useReducer(peersReducer, {});
   const [screenSharingId, setScreenSharingId] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
-  const [isVideoOn, setIsVideoOn] = useState<boolean>(true);
+  const [isCameraOn, setIsCameraOn] = useState<boolean>(true);
   const [isAudioOn, setIsAudioOn] = useState<boolean>(true);
 
   const enterRoom = ({ roomId }: { roomId: "string" }) => {
@@ -71,9 +71,6 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
   const removePeer = (peerId: string) => {
     dispatch(removePeerStreamAction(peerId));
   };
-
-  const toggleVideo = () => setIsVideoOn(!isVideoOn);
-  const toggleAudio = () => setIsAudioOn(!isAudioOn);
 
   const switchStream = (stream: MediaStream) => {
     setScreenSharingId(me?.id || "");
@@ -89,7 +86,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
 
   const shareScreen = () => {
     if (screenSharingId) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: isAudioOn }).then(switchStream);
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(switchStream);
     } else {
       navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
         switchStream(stream);
@@ -117,7 +114,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
     setMe(peer);
 
     try {
-      navigator.mediaDevices.getUserMedia({ video: isVideoOn, audio: isAudioOn }).then((stream) => {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
         setStream(stream);
       });
     } catch (error) {
@@ -142,7 +139,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
       me?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVideoOn, isAudioOn]);
+  }, []);
 
   useEffect(() => {
     if (screenSharingId) {
@@ -179,7 +176,27 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
     return () => {
       ws.off("user-joined");
     };
-  }, [me, stream, userName, isVideoOn, isAudioOn]);
+  }, [me, stream, userName]);
+
+  function handleCameraToggle() {
+    if (stream) {
+      const tracks = stream.getVideoTracks();
+      tracks.forEach((track) => {
+        track.enabled = !track.enabled;
+        setIsCameraOn(!isCameraOn);
+      });
+    }
+  }
+
+  function handleAudioToggle() {
+    if (stream) {
+      const tracks = stream.getAudioTracks();
+      tracks.forEach((track) => {
+        track.enabled = !track.enabled;
+        setIsAudioOn(!isAudioOn);
+      });
+    }
+  }
 
   return (
     <RoomContext.Provider
@@ -191,9 +208,9 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
         roomId,
         setRoomId,
         screenSharingId,
-        toggleVideo,
-        toggleAudio,
-        isVideoOn,
+        handleCameraToggle,
+        handleAudioToggle,
+        isCameraOn,
         isAudioOn,
       }}>
       {children}

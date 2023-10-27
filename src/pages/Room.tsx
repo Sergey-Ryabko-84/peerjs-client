@@ -24,9 +24,9 @@ export const Room = () => {
     shareScreen,
     screenSharingId,
     setRoomId,
-    toggleVideo,
-    toggleAudio,
-    isVideoOn,
+    handleCameraToggle,
+    handleAudioToggle,
+    isCameraOn,
     isAudioOn,
   } = useContext(RoomContext);
   const { userName, userId } = useContext(UserContext);
@@ -118,8 +118,8 @@ export const Room = () => {
           bgcolor: "#fff",
           borderTop: "2px solid #ddd",
         }}>
-        <ToggleVideoButton onClick={toggleVideo} isVideoOn={isVideoOn} />
-        <ToggleAudioButton onClick={toggleAudio} isAudioOn={isAudioOn} />
+        <ToggleVideoButton onClick={handleCameraToggle} isCameraOn={isCameraOn} />
+        <ToggleAudioButton onClick={handleAudioToggle} isAudioOn={isAudioOn} />
         <ShareScreenButton onClick={shareScreen} />
         <ChatButton onClick={toggleChat} />
         <CallEndButton />
