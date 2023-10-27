@@ -23,6 +23,10 @@ interface RoomValue {
   roomId: string;
   setRoomId: (id: string) => void;
   screenSharingId: string;
+  toggleVideo: () => void;
+  toggleAudio: () => void;
+  isVideoOn: boolean;
+  isAudioOn: boolean;
 }
 
 interface Props {
@@ -35,6 +39,10 @@ export const RoomContext = createContext<RoomValue>({
   setRoomId: (id) => {},
   screenSharingId: "",
   roomId: "",
+  toggleVideo: () => {},
+  toggleAudio: () => {},
+  isVideoOn: true,
+  isAudioOn: true,
 });
 
 if (!!window.Cypress) {
@@ -50,6 +58,8 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
   const [peers, dispatch] = useReducer(peersReducer, {});
   const [screenSharingId, setScreenSharingId] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
+  const [isVideoOn, setIsVideoOn] = useState<boolean>(true);
+  const [isAudioOn, setIsAudioOn] = useState<boolean>(true);
 
   const enterRoom = ({ roomId }: { roomId: "string" }) => {
     navigate(`/room/${roomId}`);
@@ -61,6 +71,9 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
   const removePeer = (peerId: string) => {
     dispatch(removePeerStreamAction(peerId));
   };
+
+  const toggleVideo = () => setIsVideoOn(!isVideoOn);
+  const toggleAudio = () => setIsAudioOn(!isAudioOn);
 
   const switchStream = (stream: MediaStream) => {
     setScreenSharingId(me?.id || "");
@@ -76,7 +89,9 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
 
   const shareScreen = () => {
     if (screenSharingId) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(switchStream);
+      navigator.mediaDevices
+        .getUserMedia({ video: isVideoOn, audio: isAudioOn })
+        .then(switchStream);
     } else {
       navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
         switchStream(stream);
@@ -104,7 +119,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
     setMe(peer);
 
     try {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      navigator.mediaDevices.getUserMedia({ video: isVideoOn, audio: isAudioOn }).then((stream) => {
         setStream(stream);
       });
     } catch (error) {
@@ -178,6 +193,10 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
         roomId,
         setRoomId,
         screenSharingId,
+        toggleVideo,
+        toggleAudio,
+        isVideoOn,
+        isAudioOn,
       }}>
       {children}
     </RoomContext.Provider>

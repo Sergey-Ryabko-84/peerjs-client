@@ -5,7 +5,8 @@ import {
   CallEndButton,
   ChatButton,
   ShareScreenButton,
-  ToggleMutedButton,
+  ToggleAudioButton,
+  ToggleVideoButton,
   VideoPlayer,
 } from "../components";
 import { Chat } from "../components/chat";
@@ -16,9 +17,18 @@ import { ws } from "../ws";
 export const Room = () => {
   const { id } = useParams();
   const [numberOfParticipants, setNumberOfParticipants] = useState(1);
-  const [isMuted, setIsMuted] = useState(false);
-  const { stream, screenStream, peers, shareScreen, screenSharingId, setRoomId } =
-    useContext(RoomContext);
+  const {
+    stream,
+    screenStream,
+    peers,
+    shareScreen,
+    screenSharingId,
+    setRoomId,
+    toggleVideo,
+    toggleAudio,
+    isVideoOn,
+    isAudioOn,
+  } = useContext(RoomContext);
   const { userName, userId } = useContext(UserContext);
   const { toggleChat, chat } = useContext(ChatContext);
 
@@ -66,7 +76,7 @@ export const Room = () => {
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {screenSharingVideo ? (
           <Box sx={{ width: "100%" }}>
-            <VideoPlayer stream={screenSharingVideo} muted={isMuted} />
+            <VideoPlayer stream={screenSharingVideo} />
           </Box>
         ) : (
           <Grid container spacing={2} justifyContent="center">
@@ -85,7 +95,7 @@ export const Room = () => {
                   item
                   key={index}
                   xs={numberOfParticipants < 3 ? 6 : numberOfParticipants < 9 ? 3 : 2}>
-                  <VideoPlayer stream={peer.stream} userName={peer.userName} muted={isMuted} />
+                  <VideoPlayer stream={peer.stream} userName={peer.userName} />
                 </Grid>
               ))}
           </Grid>
@@ -108,7 +118,8 @@ export const Room = () => {
           bgcolor: "#fff",
           borderTop: "2px solid #ddd",
         }}>
-        <ToggleMutedButton onClick={() => setIsMuted(!isMuted)} isMuted={isMuted} />
+        <ToggleVideoButton onClick={toggleVideo} isVideoOn={isVideoOn} />
+        <ToggleAudioButton onClick={toggleAudio} isAudioOn={isAudioOn} />
         <ShareScreenButton onClick={shareScreen} />
         <ChatButton onClick={toggleChat} />
         <CallEndButton />
