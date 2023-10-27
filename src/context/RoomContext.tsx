@@ -72,8 +72,33 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
     dispatch(removePeerStreamAction(peerId));
   };
 
-  const toggleVideo = () => setIsVideoOn(!isVideoOn);
-  const toggleAudio = () => setIsAudioOn(!isAudioOn);
+  const toggleVideo = () => {
+    try {
+      navigator.mediaDevices
+        .getUserMedia({ video: !isVideoOn, audio: isAudioOn })
+        .then((stream) => {
+          setStream(stream);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setIsVideoOn(!isVideoOn);
+  };
+
+  const toggleAudio = () => {
+    try {
+      navigator.mediaDevices
+        .getUserMedia({ video: isVideoOn, audio: !isAudioOn })
+        .then((stream) => {
+          setStream(stream);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setIsAudioOn(!isAudioOn);
+  };
 
   const switchStream = (stream: MediaStream) => {
     setScreenSharingId(me?.id || "");
@@ -142,7 +167,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
       me?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVideoOn, isAudioOn]);
+  }, []);
 
   useEffect(() => {
     if (screenSharingId) {
