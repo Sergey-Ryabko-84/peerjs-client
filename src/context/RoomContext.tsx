@@ -142,7 +142,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
       me?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAudioOn, isAudioOn]);
+  }, [isVideoOn, isAudioOn]);
 
   useEffect(() => {
     if (screenSharingId) {
