@@ -89,9 +89,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
 
   const shareScreen = () => {
     if (screenSharingId) {
-      navigator.mediaDevices
-        .getUserMedia({ video: isVideoOn, audio: isAudioOn })
-        .then(switchStream);
+      navigator.mediaDevices.getUserMedia({ video: true, audio: isAudioOn }).then(switchStream);
     } else {
       navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
         switchStream(stream);
@@ -144,7 +142,7 @@ export const RoomProvider: React.FC<Props> = ({ children }) => {
       me?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAudioOn, isAudioOn]);
 
   useEffect(() => {
     if (screenSharingId) {
